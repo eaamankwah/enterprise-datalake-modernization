@@ -1,10 +1,10 @@
-# 🏥 Enterprise Data Lake — Medical Data Processing Company
+# Enterprise Data Lake — Medical Data Processing Company
 
 > **A comprehensive open-source Data Lake design and architecture proposal for a San Francisco-based EMR analytics company serving 8,000+ medical facilities across the United States.**
 
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 
 - [Project Overview](#-project-overview)
 - [The Problem](#-the-problem)
@@ -26,7 +26,7 @@
 
 ---
 
-## 🔭 Project Overview
+## Project Overview
 
 **Medical Data Processing Company** (founded 2007, San Francisco, CA) specializes in processing Electronic Medical Records (EMR) and delivering real-time analytics to medical facilities. Their platform serves:
 
@@ -44,7 +44,7 @@ Customers include **urgent care clinics, hospitals, nursing homes, emergency roo
 
 ---
 
-## ⚠️ The Problem
+## The Problem
 
 The company's legacy infrastructure — a **monolithic 3-tier architecture backed by Microsoft SQL Server** — cannot scale with its rapid data growth.
 
@@ -79,7 +79,7 @@ ETL Jobs:            70+ SSIS packages → 100+ tables
 
 ---
 
-## ✅ Solution Summary
+## Solution Summary
 
 Migrate to a **fully open-source, on-premise Data Lake** built on the Apache Hadoop ecosystem — eliminating vendor lock-in, enabling horizontal scaling, supporting real-time processing, and providing a single governed source of truth for all 8,000 facilities.
 
@@ -87,15 +87,15 @@ Migrate to a **fully open-source, on-premise Data Lake** built on the Apache Had
 
 - ♾️ **Unlimited storage** on commodity hardware — scales to petabytes
 - ⚡ **Near-real-time ingestion** replacing nightly-only batch ETL
-- 🛡️ **Zero-downtime fault tolerance** via HDFS replication factor 3
-- 🤖 **ML/AI ready** — TensorFlow and Spark MLlib run natively on the lake
-- 🔐 **HIPAA compliant** — AES-256 encryption, Kerberos auth, Apache Ranger RBAC
-- 📉 **40–60% storage cost reduction** via hot/warm/cold tiering
-- 🔁 **1 metadata-driven PySpark framework** replaces 70+ SSIS scripts
+-  **Zero-downtime fault tolerance** via HDFS replication factor 3
+-  **ML/AI ready** — TensorFlow and Spark MLlib run natively on the lake
+-  **HIPAA compliant** — AES-256 encryption, Kerberos auth, Apache Ranger RBAC
+-  **40–60% storage cost reduction** via hot/warm/cold tiering
+-  **1 metadata-driven PySpark framework** replaces 70+ SSIS scripts
 
 ---
 
-## 🏛️ Architecture
+## Architecture
 
 ### Architecture Diagram
 
@@ -124,15 +124,15 @@ flowchart TD
   %% ─────────────────────────────────────────────
   %% DATA SOURCES
   %% ─────────────────────────────────────────────
-  subgraph SRC["🏥  DATA SOURCES  —  8,000 Medical Facilities"]
+  subgraph SRC["  DATA SOURCES  —  8,000 Medical Facilities"]
     direction TB
-    S1["🏨 Hospitals &amp; ICUs"]
-    S2["🚑 Emergency Rooms"]
-    S3["🏠 Nursing Homes"]
-    S4["⚕️ Urgent Care"]
-    S5["📁 FTP / SFTP Servers"]
-    S6["🔌 REST APIs"]
-    S7["🗄️ Legacy SQL Server"]
+    S1[" Hospitals &amp; ICUs"]
+    S2[" Emergency Rooms"]
+    S3[" Nursing Homes"]
+    S4[" Urgent Care"]
+    S5[" FTP / SFTP Servers"]
+    S6[" REST APIs"]
+    S7[" Legacy SQL Server"]
     S1 & S2 & S3 & S4 --> S5
     S1 & S2 & S3 & S4 --> S6
     S7 -->|"Apache Sqoop\nbulk import"| S6
@@ -143,11 +143,11 @@ flowchart TD
   %% ─────────────────────────────────────────────
   subgraph ING["① INGESTION LAYER  —  Apache NiFi · Kafka · Debezium · Flume · Sqoop"]
     direction TB
-    I1["⚙️ Apache NiFi\nDataflow Orchestration\nFTP polling · gzip decompress\nvalidation · backpressure"]
-    I2["📨 Apache Kafka\nDistributed Message Queue\n12 topics · partitioned\nmessage persistence"]
-    I3["🔄 Debezium + Kafka Connect\nChange Data Capture\nSQL Server TX log reader\nRow-level CDC / UPSERT"]
-    I4["📤 Apache Flume\nLog & File Collection\nAgent-based · buffered\nReliable delivery"]
-    I5["📥 Apache Sqoop\nBulk DB Import\nParallel mappers\nIncremental load"]
+    I1[" Apache NiFi\nDataflow Orchestration\nFTP polling · gzip decompress\nvalidation · backpressure"]
+    I2[" Apache Kafka\nDistributed Message Queue\n12 topics · partitioned\nmessage persistence"]
+    I3[" Debezium + Kafka Connect\nChange Data Capture\nSQL Server TX log reader\nRow-level CDC / UPSERT"]
+    I4[" Apache Flume\nLog & File Collection\nAgent-based · buffered\nReliable delivery"]
+    I5[" Apache Sqoop\nBulk DB Import\nParallel mappers\nIncremental load"]
     I1 -->|"route to queue"| I2
     I3 -->|"CDC events"| I2
     I4 -->|"file streams"| I2
@@ -159,11 +159,11 @@ flowchart TD
   %% ─────────────────────────────────────────────
   subgraph STR["② STORAGE LAYER  —  HDFS  ·  Replication Factor 3  ·  Parquet / ORC  ·  Apache Hudi"]
     direction LR
-    ST1["🟥 RAW ZONE\nImmutable Landing\nParquet / ORC\nSchema-on-read\nNever deleted\nHIPAA audit trail"]
-    ST2["🟧 STAGING ZONE\nCleaned & Validated\nApache Hudi UPSERT\nDedup & cleansing\nCDC sync\nTime-travel queries"]
-    ST3["🟩 CURATED ZONE\nGold Analytics Layer\nParquet partitioned\nAggregated &amp; joined\nPatient metrics\n5+ yr retention"]
-    ST4["🟦 ARCHIVE ZONE\nCold Storage\nHot 0–6 mo → SSD\nWarm 6–24 mo → HDD\nCold 2+ yr → JBOD\n7+ yr HIPAA tape"]
-    ST5["📚 METADATA STORE\nApache Atlas\nData catalog\nLineage tracking\nPHI/PII tagging\nHive Metastore\nSchema registry"]
+    ST1[" RAW ZONE\nImmutable Landing\nParquet / ORC\nSchema-on-read\nNever deleted\nHIPAA audit trail"]
+    ST2[" STAGING ZONE\nCleaned & Validated\nApache Hudi UPSERT\nDedup & cleansing\nCDC sync\nTime-travel queries"]
+    ST3[" CURATED ZONE\nGold Analytics Layer\nParquet partitioned\nAggregated &amp; joined\nPatient metrics\n5+ yr retention"]
+    ST4[" ARCHIVE ZONE\nCold Storage\nHot 0–6 mo → SSD\nWarm 6–24 mo → HDD\nCold 2+ yr → JBOD\n7+ yr HIPAA tape"]
+    ST5[" METADATA STORE\nApache Atlas\nData catalog\nLineage tracking\nPHI/PII tagging\nHive Metastore\nSchema registry"]
     ST1 -->|"cleanse"| ST2
     ST2 -->|"aggregate"| ST3
     ST3 -->|"auto-tier"| ST4
@@ -177,10 +177,10 @@ flowchart TD
   %% ─────────────────────────────────────────────
   subgraph PRC["③ PROCESSING LAYER  —  Apache Spark · Kafka Streams · Flink · Hive · Impala · Presto · Airflow"]
     direction TB
-    P1["🔥 Batch Processing\nApache Spark / PySpark\nMetadata-driven ETL\nReplaces 70+ SSIS scripts\nAirflow orchestration\nYARN resource mgmt"]
-    P2["⚡ Stream Processing\nKafka Streams / Flink\nNear-real-time ingest\nExactly-once semantics\nSub-minute latency\nEvent-time processing"]
-    P3["🔍 Ad-Hoc Querying\nApache Hive · Impala · Presto\nFederated SQL queries\nSub-second dashboards\nCross-source joins\nNo data movement"]
-    P4["🤖 ML & Analytics\nSpark MLlib · TensorFlow\nPatient risk scoring\nAnomaly detection\nMLflow model registry\nJupyter / Zeppelin"]
+    P1[" Batch Processing\nApache Spark / PySpark\nMetadata-driven ETL\nReplaces 70+ SSIS scripts\nAirflow orchestration\nYARN resource mgmt"]
+    P2[" Stream Processing\nKafka Streams / Flink\nNear-real-time ingest\nExactly-once semantics\nSub-minute latency\nEvent-time processing"]
+    P3[" Ad-Hoc Querying\nApache Hive · Impala · Presto\nFederated SQL queries\nSub-second dashboards\nCross-source joins\nNo data movement"]
+    P4[" ML & Analytics\nSpark MLlib · TensorFlow\nPatient risk scoring\nAnomaly detection\nMLflow model registry\nJupyter / Zeppelin"]
     P1 & P2 & P3 & P4
   end
 
@@ -189,11 +189,11 @@ flowchart TD
   %% ─────────────────────────────────────────────
   subgraph SRV["④ SERVING LAYER  —  Superset · REST APIs · MLflow · Presto · PowerBI / Tableau"]
     direction TB
-    SV1["📊 Dashboards\nApache Superset\nGrafana · PowerBI\nTableau\nReal-time patient data"]
-    SV2["📋 SQL Reports\nHive / Impala\nCompliance reports\nDaily / weekly / nightly\nCustomer self-service"]
-    SV3["🌐 Web Portal & APIs\nFastAPI REST layer\nCustomer portal\nBed availability\nEMR access"]
-    SV4["🧠 ML Model Serving\nMLflow REST endpoints\nRisk score predictions\nAnomaly alerts\nClinical intelligence"]
-    SV5["🔬 Ad-Hoc Analytics\nPresto / Trino\nJupyter Notebooks\nData analyst access\nFederated SQL"]
+    SV1[" Dashboards\nApache Superset\nGrafana · PowerBI\nTableau\nReal-time patient data"]
+    SV2[" SQL Reports\nHive / Impala\nCompliance reports\nDaily / weekly / nightly\nCustomer self-service"]
+    SV3[" Web Portal & APIs\nFastAPI REST layer\nCustomer portal\nBed availability\nEMR access"]
+    SV4[" ML Model Serving\nMLflow REST endpoints\nRisk score predictions\nAnomaly alerts\nClinical intelligence"]
+    SV5[" Ad-Hoc Analytics\nPresto / Trino\nJupyter Notebooks\nData analyst access\nFederated SQL"]
   end
 
   %% ─────────────────────────────────────────────
@@ -201,9 +201,9 @@ flowchart TD
   %% ─────────────────────────────────────────────
   subgraph SEC["⑤ CROSS-CUTTING  —  Security · HA · Governance · Monitoring"]
     direction LR
-    C1["🔐 Security\nApache Ranger RBAC\nKerberos auth\nAES-256 at rest\nTLS in transit\nApache Knox gateway"]
-    C2["♻️ HA & Recovery\nHDFS replication × 3\nNameNode HA / ZooKeeper\nDistCp cross-cluster\nSub-minute failover\nRTO: hours → seconds"]
-    C3["📡 Monitoring\nApache Ambari\nPrometheus + Grafana\nELK Stack logging\nAirflow pipeline UI\nJob alerting"]
+    C1[" Security\nApache Ranger RBAC\nKerberos auth\nAES-256 at rest\nTLS in transit\nApache Knox gateway"]
+    C2[" HA & Recovery\nHDFS replication × 3\nNameNode HA / ZooKeeper\nDistCp cross-cluster\nSub-minute failover\nRTO: hours → seconds"]
+    C3[" Monitoring\nApache Ambari\nPrometheus + Grafana\nELK Stack logging\nAirflow pipeline UI\nJob alerting"]
   end
 
   %% ─────────────────────────────────────────────
@@ -282,7 +282,7 @@ flowchart TD
 
 ---
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 ### Ingestion Layer
 
@@ -331,30 +331,30 @@ flowchart TD
 
 ---
 
-## 📐 Design Principles
+## Design Principles
 
-### 1. 🔓 Open Source First — No Vendor Lock-in
+### 1. Open Source First — No Vendor Lock-in
 All components are selected from the **Apache Software Foundation** open-source ecosystem. No GCP, AWS, Azure, Oracle, or proprietary licensing. This directly satisfies the business requirement to avoid vendor dependency and enables the company to run on any commodity hardware without licensing fees.
 
-### 2. ⚖️ Separation of Storage and Compute
+### 2. Separation of Storage and Compute
 **HDFS** (storage) is fully decoupled from **Apache Spark + YARN** (compute). Storage nodes and compute nodes scale independently. When data volume grows, only storage nodes need to be added — compute nodes can remain unchanged, and vice versa.
 
-### 3. 🎛️ Metadata-Driven Design
+### 3. Metadata-Driven Design
 A **single parameterized PySpark framework** reads transformation rules from **Apache Atlas / Hive Metastore** and applies them dynamically. This replaces 70+ custom SSIS scripts with one maintainable codebase. New facility data sources onboard in **hours** instead of weeks.
 
-### 4. 🔁 Fault Tolerance & High Availability
+### 4. Fault Tolerance & High Availability
 - HDFS **Replication Factor 3** → no data loss on node failure
 - **ZooKeeper** → automatic NameNode leader election and failover
 - **Kafka partition replication** → no message loss on broker failure
 - **YARN** → automatic job rescheduling on executor failure
 - RTO improvement: **hours → sub-minute**
 
-### 5. 📖 Schema-on-Read & Data Immutability
+### 5. Schema-on-Read & Data Immutability
 The **Raw Zone is write-once, never deleted** — preserving a permanent audit trail required for HIPAA compliance. Structure is enforced at the Staging and Curated zones. Apache Hudi enables **time-travel queries** to audit historical states of any dataset.
 
 ---
 
-## 🔄 Data Flow
+## Data Flow
 
 ```
 8,000 Facilities
@@ -393,7 +393,7 @@ The **Raw Zone is write-once, never deleted** — preserving a permanent audit t
 
 ---
 
-## 🗄️ Storage Strategy
+## Storage Strategy
 
 ### Medallion Architecture (4 Zones)
 
@@ -416,10 +416,10 @@ Schema-on-read    Time-travel        Business KPIs     Cold: 2+ yr
 
 | Tier | Age | Hardware | Latency | Cost |
 |------|-----|----------|---------|------|
-| 🔥 **Hot** | 0–6 months | SSD-backed HDFS nodes | Seconds | High |
-| 🌤️ **Warm** | 6–24 months | HDD HDFS nodes | Minutes | Medium |
-| ❄️ **Cold** | 2+ years | JBOD high-density HDD | Hours | Low |
-| 📦 **Archive** | 7+ years (HIPAA) | Tape / Remote HDFS cluster | Days | Very Low |
+|  **Hot** | 0–6 months | SSD-backed HDFS nodes | Seconds | High |
+|  **Warm** | 6–24 months | HDD HDFS nodes | Minutes | Medium |
+|  **Cold** | 2+ years | JBOD high-density HDD | Hours | Low |
+|  **Archive** | 7+ years (HIPAA) | Tape / Remote HDFS cluster | Days | Very Low |
 
 > HDFS Storage Policies (`HOT`, `WARM`, `COLD`, `ALL_SSD`) auto-migrate data based on age and last-access time. Expected **40–60% cost reduction** vs uniform SSD storage.
 
@@ -437,7 +437,7 @@ Schema-on-read    Time-travel        Business KPIs     Cold: 2+ yr
 
 ---
 
-## 🔐 Security & Compliance
+## Security & Compliance
 
 | Control | Tool | Coverage |
 |---------|------|----------|
@@ -452,7 +452,7 @@ Schema-on-read    Time-travel        Business KPIs     Cold: 2+ yr
 
 ---
 
-## 📈 Scalability
+## Scalability
 
 ### Ingestion Layer Scaling
 
@@ -473,7 +473,7 @@ Schema-on-read    Time-travel        Business KPIs     Cold: 2+ yr
 
 ---
 
-## 🔀 Alternative Tools Evaluated
+## Alternative Tools Evaluated
 
 | Layer | Selected | Alternative 1 | Alternative 2 | Key Reason for Selection |
 |-------|----------|---------------|---------------|--------------------------|
@@ -491,7 +491,7 @@ Schema-on-read    Time-travel        Business KPIs     Cold: 2+ yr
 
 ---
 
-## 🌍 Industry References
+## Industry References
 
 | Company | Industry | Stack | Key Achievement |
 |---------|----------|-------|-----------------|
@@ -503,7 +503,7 @@ Schema-on-read    Time-travel        Business KPIs     Cold: 2+ yr
 
 ---
 
-## ⚠️ Assumptions & Risks
+## Assumptions & Risks
 
 ### Assumptions
 
@@ -528,7 +528,7 @@ Schema-on-read    Time-travel        Business KPIs     Cold: 2+ yr
 
 ---
 
-## 📦 Project Deliverables
+## Project Deliverables
 
 | # | Deliverable | Description | File |
 |---|------------|-------------|------|
@@ -560,7 +560,7 @@ Schema-on-read    Time-travel        Business KPIs     Cold: 2+ yr
 
 ---
 
-## 🔗 References
+## References
 
 | Resource | URL |
 |----------|-----|
@@ -582,9 +582,9 @@ Schema-on-read    Time-travel        Business KPIs     Cold: 2+ yr
 
 ---
 
-## 📄 License
+## License
 
-This project and its documentation are submitted as academic coursework for the **Udacity Data Engineering Nanodegree — Integrated Project Submission (IPS) Version 1.0**.
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details..
 
 All architecture designs, written content, and code are **original work**. No content has been copied or plagiarized from external sources. Referenced tools and technologies remain the intellectual property of their respective open-source projects and foundations.
 
